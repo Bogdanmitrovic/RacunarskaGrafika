@@ -59,83 +59,100 @@ void CGrafikazadatakzapripremuStefanView::OnDraw(CDC* pDC)
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
-	CPen zutaOlovkaDebela(PS_SOLID, 3, RGB(255, 255, 0));
-	CPen zutaOlovkaTanka(PS_SOLID, 2, RGB(255, 255, 0));
-	CPen* staraOlovka = pDC->SelectObject(&zutaOlovkaDebela);
-	CBrush brushRoze(RGB(255, 50, 255));
-	CBrush brushZuta(RGB(255, 255, 0));
-	CBrush brushLjubicasta(RGB(150, 0, 200));
-	CBrush brushZelena(RGB(50, 255, 0));
-	CBrush brushCrvena(RGB(255, 0, 0));
-	CBrush brushSablon(HS_VERTICAL, RGB(200, 200, 255));
-	CBrush brushNarandzasta(RGB(200, 150, 10));
-	CBrush* staraChetka = pDC->SelectObject(&brushRoze);
+	CPen nullpen(PS_NULL, 1, RGB(0, 0, 0));
+	CPen pen1(PS_SOLID, 5, RGB(0, 0, 255));
+	CPen pen2(PS_SOLID, 2, RGB(0, 0, 255));
+	CPen penGrid(PS_SOLID, 1, RGB(255, 255, 255));
+	CPen* oldPen = pDC->SelectObject(&nullpen);
 
-	POINT points1[3] = { 
-		CPoint(25,150),
-		CPoint(125,150),
-		CPoint(125,50) };
-	pDC->Polygon(points1, 3);
+	CBrush grey(RGB(200,200,200));
+	CBrush green(RGB(0, 255, 0));
+	CBrush yellow(RGB(255, 255, 0));
+	CBrush orange(RGB(255, 165, 0));
+	CBrush purple(RGB(138, 43, 226));
+	CBrush red(RGB(255, 0, 0));
+	CBrush pink(RGB(255, 0, 255));
+	CBrush pattern(HS_CROSS, RGB(0, 0, 255));
+	CBrush* oldBrush = pDC->SelectObject(&grey);
 
-	pDC->SelectObject(&brushZuta);
-	POINT points2[4] = {
-		CPoint(25,150),
-		CPoint(175,150),
-		CPoint(250,225),
-		CPoint(100,225)
+	pDC->Rectangle(0, 0, 500, 500);
+
+	pDC->SelectObject(pen1);
+	POINT pts1[3] = {
+		CPoint(75,250),
+		CPoint(300,250),
+		CPoint(300,25)
 	};
-	pDC->Polygon(points2, 4);
+	pDC->SelectObject(green);
+	pDC->Polygon(pts1, 3);
 
-	pDC->SelectObject(&brushLjubicasta);
-	POINT points3[4] = {
-		CPoint(175,150),
-		CPoint(250,75),
-		CPoint(325,150),
-		CPoint(250,225)
+	POINT pts2[3] = {
+		CPoint(75,250),
+		CPoint(300,250),
+		CPoint(300,475)
 	};
-	pDC->Polygon(points3, 4);
+	pDC->SelectObject(yellow);
+	pDC->Polygon(pts2, 3);
 
-	pDC->SelectObject(&brushZelena);
-	POINT points4[3] = {
-		CPoint(400,75),
-		CPoint(250,75),
-		CPoint(325,150)
+	POINT pts3[3] = {
+		CPoint(300,250),
+		CPoint(300,25),
+		CPoint(425,137)
 	};
-	pDC->Polygon(points4, 3);
+	pDC->SelectObject(purple);
+	pDC->Polygon(pts3, 3);
 
-	pDC->SelectObject(&brushCrvena);
-	POINT points5[3] = {
-		CPoint(400,75),
-		CPoint(500,175),
-		CPoint(300,175)
+	POINT pts4[3] = {
+		CPoint(300,25),
+		CPoint(425,25),
+		CPoint(425,137)
 	};
-	pDC->Polygon(points5, 3);
+	pDC->SelectObject(orange);
+	pDC->Polygon(pts4, 3);
 
-	pDC->SelectObject(&brushSablon);
-	POINT points6[3] = {
-		CPoint(500,175),
-		CPoint(500,375),
-		CPoint(300,175)
+	POINT pts5[4] = {
+		CPoint(425,137),
+		CPoint(425,250),
+		CPoint(300,367),
+		CPoint(300,250)
 	};
-	pDC->Polygon(points6, 3);
+	pDC->SelectObject(red);
+	pDC->Polygon(pts5, 4);
 
-	pDC->SelectObject(&brushNarandzasta);
-	POINT points7[3] = {
-		CPoint(300,425),
-		CPoint(425,300),
-		CPoint(300,175)
+	POINT pts6[3] = {
+		CPoint(425,250),
+		CPoint(425,367),
+		CPoint(300,367)
 	};
-	pDC->Polygon(points7, 3);
+	pDC->SelectObject(pink);
+	pDC->Polygon(pts6, 3);
 
-	pDC->SelectObject(&zutaOlovkaTanka);
+	pDC->SelectObject(pattern);
+	pDC->Rectangle(300, 367, 425, 475);
+
 	pDC->SelectStockObject(HOLLOW_BRUSH);
-	DrawRegularPolygon(pDC, 100, 110, 7, 15, 0);
-	DrawRegularPolygon(pDC, 325, 110, 8, 15, 3.14159 / 4);
-	DrawRegularPolygon(pDC, 400, 135, 6, 20, 0);
-	// i tako dalje svi ostali poligoni na istu foru
+	pDC->SelectObject(pen2);
+	DrawRegularPolygon(pDC, 675 / 3, 525 / 3, 37, 4, 0);
+	DrawRegularPolygon(pDC, 675 / 3, 975 / 3, 37, 5, 5*3.14 / 6);
+	DrawRegularPolygon(pDC, 1150 / 3, 187 / 3, 18, 8, 3.14 / 6);
+	
+	if (gridEnabled)
+	{
+		pDC->SelectObject(penGrid);
+		for (int i = 25; i <= 500; i += 25)
+		{
+			pDC->MoveTo(CPoint(i, 0));
+			pDC->LineTo(CPoint(i, 500));
+			pDC->MoveTo(CPoint(0, i));
+			pDC->LineTo(CPoint(500, i));
+		}
+	}
+
+	pDC->SelectObject(oldPen);
+	pDC->SelectObject(oldBrush);
 }
 
-void CGrafikazadatakzapripremuStefanView::DrawRegularPolygon(CDC* pDC, int cx, int cy, int n, int r, float rotAngle)
+void CGrafikazadatakzapripremuStefanView::DrawRegularPolygon(CDC* pDC, int cx, int cy, int r, int n, float rotAngle)
 {
 	POINT* points = new POINT[n];
 	float step = 2 * 3.14159 / n, angle = rotAngle;
@@ -204,3 +221,16 @@ CGrafikazadatakzapripremuStefanDoc* CGrafikazadatakzapripremuStefanView::GetDocu
 	return (CGrafikazadatakzapripremuStefanDoc*)m_pDocument;
 }
 #endif //_DEBUG
+
+
+// CV5View message handlers
+
+
+void CV5View::OnLButtonUp(UINT nFlags, CPoint point)
+{
+	// TODO: Add your message handler code here and/or call default
+
+	CView::OnLButtonUp(nFlags, point);
+	gridEnabled = !gridEnabled;
+	Invalidate();
+}
