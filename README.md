@@ -1,2 +1,2 @@
 # RacunarskaGrafika
-Elfak 4. godina, materijal za lab vezbe i ispiti
+Elfak 4. godina, materijal za lab vezbe i ispite
